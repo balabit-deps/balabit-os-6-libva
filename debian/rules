@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+
+DEB_HOST_ARCH_OS = $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+
+confflags = --disable-silent-rules --enable-static
+ifeq (,$(findstring linux,$(DEB_HOST_ARCH_OS)))
+# wayland is only available on linux-any
+confflags += --disable-wayland
+endif
+
+export DEB_LDFLAGS_MAINT_APPEND=-Wl,--as-needed
+
+%:
+	dh $@ --parallel --with autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(confflags)
+
+override_dh_auto_build:
+	dh_auto_build
+	cd debian/dh/ && pod2man -c Debhelper -r '' dh_libva dh_libva.1
+
+override_dh_makeshlibs:
+	dh_makeshlibs -Xdummy_drv_video.so
+
+override_dh_installchangelogs:
+	dh_installchangelogs NEWS
