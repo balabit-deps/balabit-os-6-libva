@@ -1,3 +1,12 @@
+libva (1.7.0-1ubuntu0.1) xenial; urgency=medium
+
+  [ Sebastian Ramacher ]
+  * debian/control:
+    - Add mesa-va-drivers as alternative to Depends of va-driver-all
+      (LP: #1652466).
+
+ -- Amr Ibrahim <amribrahim1987@hotmail.com>  Wed, 30 Aug 2017 04:55:15 -0500
+
 libva (1.7.0-1) unstable; urgency=medium
 
   * New upstream release.
